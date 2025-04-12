@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsersService } from '../users.service';
+import { CommonModule, NgFor, NgForOf } from '@angular/common';
 
 @Component({
   selector: 'app-user-dialog',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule ,],
   templateUrl: './user-dialog.component.html',
   styles: ``,
   standalone:true
