@@ -18,8 +18,6 @@ export class UsersService {
     }
     addUser(user){
       return this._httpClient.post(`${environment.url}/auth/register/user` , user).subscribe(res => {
-        console.log(res);
-       
       })
     }
     deleteUser(id){

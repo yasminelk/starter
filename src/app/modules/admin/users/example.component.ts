@@ -5,12 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
 import { UsersService } from './users.service';
 import { NgFor } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
     selector     : 'example',
     standalone   : true,
     templateUrl  : './example.component.html',
-    imports:[MatIconModule,MatButtonModule,NgFor] , 
+    imports:[MatIconModule,MatButtonModule,NgFor,MatTableModule] , 
     encapsulation: ViewEncapsulation.None,
 })
 export class ExampleComponent implements OnInit
@@ -18,6 +19,7 @@ export class ExampleComponent implements OnInit
     /**
      * Constructor
      */
+    displayedColumns: string[] = ['name', 'email', 'actions'];
     users: any[] = [] ;
     constructor(
         @Inject(MatDialog) public dialog: MatDialog , 
@@ -29,7 +31,6 @@ export class ExampleComponent implements OnInit
     ngOnInit(): void {
         this.userService.getUsers().subscribe(res => {
             this.users = res as any[] ;
-          
             this.cdr.detectChanges();
             
         })

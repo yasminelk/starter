@@ -69,7 +69,7 @@ export class AuthService {
 
                 // Set the authenticated flag to true
                 this._authenticated = true;
-
+                
                 // Store the user on the user service
                 this._userService.user = response.user;
 

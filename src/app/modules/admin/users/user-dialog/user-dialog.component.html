@@ -1,4 +1,4 @@
-<div class="p-6 bg-white rounded-lg shadow-lg w-full max-w-md">
+<div class="bg-white  w-full max-w-md">
     <h2 class="text-2xl font-semibold text-gray-700 mb-4">Ajouter un nouvel utilisateur</h2>
     
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
@@ -18,8 +18,7 @@
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-600">Rôle</label>
         <select formControlName="role" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300">
-          <option value="PATIENT">Patient</option>
-          <option value="DOCTOR">Médecin</option>
+          <option value="PATIENT">employer </option>
           <option value="ADMIN">Administrateur</option>
         </select>
       </div>

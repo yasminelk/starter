@@ -9,6 +9,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon : 'heroicons_outline:chart-pie',
         link : '/users'
     },
+    {
+        id   : 'productManagement',
+        title: "Gestion des produits",
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/product'
+    },
   
 ];
 export const compactNavigation: FuseNavigationItem[] = [
