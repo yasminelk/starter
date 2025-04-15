@@ -1,6 +1,112 @@
-<div class="bg-white w-full max-w-md">
-    <h2 class="text-2xl font-semibold text-gray-700 mb-4">Ajouter une nouvelle commande </h2>
-  
-  
-  </div>
-  
+<div class="bg-white w-full max-w-2xl p-6 rounded-lg shadow-md">
+  <h2 class="text-2xl font-semibold text-gray-700 mb-6">Créer une facture</h2>
+
+  <form [formGroup]="factureForm" (ngSubmit)="onSubmit()">
+
+    <!-- Nom de la facture -->
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-600">Nom / Référence</label>
+      <input
+        formControlName="name"
+        type="text"
+        class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300"
+        placeholder="FACT-2025-001"
+      />
+    </div>
+
+    <!-- Date de la facture -->
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-600">Date</label>
+      <input
+        formControlName="date"
+        type="date"
+        class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300"
+      />
+    </div>
+
+    <!-- Liste des produits -->
+    <div formArrayName="items" class="mb-4 space-y-4">
+      <div
+        *ngFor="let item of items.controls; let i = index"
+        [formGroupName]="i"
+        class="flex gap-2 items-end"
+      >
+        <!-- Produit -->
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-gray-600">Produit</label>
+          <select formControlName="productId" class="w-full mt-1 p-2 border rounded-lg">
+            <option [ngValue]="null">-- Choisir un produit --</option>
+            <option *ngFor="let product of products" [value]="product.id">
+              {{ product.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Quantité -->
+        <div class="w-24">
+          <label class="block text-sm font-medium text-gray-600">Qté</label>
+          <input
+            type="number"
+            min="1"
+            formControlName="quantity"
+            class="w-full mt-1 p-2 border rounded-lg"
+            placeholder="1"
+          />
+        </div>
+
+        <!-- Prix -->
+        <div class="w-28">
+          <label class="block text-sm font-medium text-gray-600">Prix</label>
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            formControlName="price"
+            class="w-full mt-1 p-2 border rounded-lg"
+            placeholder="0.00"
+          />
+        </div>
+
+        <!-- Supprimer -->
+        <button
+          type="button"
+          class="text-red-600 hover:text-red-800 mt-6"
+          (click)="removeItem(i)"
+          *ngIf="items.length > 1"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+
+    <!-- Ajouter un produit -->
+    <div class="mb-4">
+      <button
+        type="button"
+        (click)="addItem()"
+        class="bg-gray-200 hover:bg-gray-300 text-sm px-3 py-1 rounded"
+      >
+        + Ajouter un produit
+      </button>
+    </div>
+
+    <!-- Total -->
+    <div class="mb-4 text-right text-lg font-semibold">
+      Total: {{ totalAmount }} €
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-6 flex justify-end gap-3">
+      <button type="button" (click)="onCancel()" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+        Annuler
+      </button>
+      <button
+        type="submit"
+        [disabled]="factureForm.invalid"
+        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+      >
+        Créer la facture
+      </button>
+    </div>
+  </form>
+</div>

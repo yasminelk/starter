@@ -5,8 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import Swal from 'sweetalert2';
-import { factureDialogueComponent } from './facture-dialogue/facture-dialogue.component';
-import { factureeService } from './facture.service';
+import { FactureService } from './facture.service';
+import { FactureDialogueComponent } from './facture-dialogue/facture-dialogue.component';
 
 @Component({
   selector: 'app-facture',
@@ -18,12 +18,12 @@ export class factureComponent {
   
    displayedColumns: string[] = ['name', 'Prix', 'quantity','actions'];
       factures: any[] = [] ;
-      constructor( @Inject(MatDialog) public dialog: MatDialog , private factureService:factureeService,
+      constructor( @Inject(MatDialog) public dialog: MatDialog , private factureService:FactureService,
       private cdr: ChangeDetectorRef ) {
     
       }
       ngOnInit(): void {
-          this.factureService.getfactures().subscribe(res => {
+          this.factureService.getFactures().subscribe(res => {
               this.factures = res as any[] ;
               console.log("this.factures",this.factures);
               this.cdr.detectChanges();
@@ -32,7 +32,7 @@ export class factureComponent {
       }
 
    handleOpenDialog(params?:null){
-        const dialogRef = this.dialog.open(factureDialogueComponent, {
+        const dialogRef = this.dialog.open(FactureDialogueComponent, {
             width:  '500px',  // Default to 400px if not provided
             height: '650px', // Default to auto if not provided
             data: {},

@@ -1,59 +1,86 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UserService } from 'app/core/user/user.service';
-import { factureeService } from '../facture.service';
-import Swal from 'sweetalert2';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { FactureService } from '../facture.service';
+import { ReactiveFormsModule } from '@angular/forms'; // ✅ AJOUTER CECI
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-facture-dialogue',
   templateUrl: './facture-dialogue.component.html',
   styleUrls: ['./facture-dialogue.component.scss'],
-  standalone: true,
-  imports: [ReactiveFormsModule], // Add FormsModule, ReactiveFormsModule, etc., in your module
+  imports: [
+    CommonModule,
+    ReactiveFormsModule, // ✅ AJOUTER ICI AUSSI
+    // ... autres modules (MatDialogModule, etc.)
+  ]
 })
-export class factureDialogueComponent implements OnInit {
-  factureForm!: FormGroup;
+export class FactureDialogueComponent implements OnInit {
 
-  // Assuming user list is passed via dialog data
-  user: any
+  factureForm!: FormGroup;
+  products: any[] = []; // à remplir via un ProductService si besoin
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<factureDialogueComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any , 
-    private _userService :UserService , 
-    private _factureService : factureeService
+    private dialogRef: MatDialogRef<FactureDialogueComponent>,
+    private factureService: FactureService
   ) {}
 
   ngOnInit(): void {
-    this._userService.user$.subscribe(res => {
-      console.log(res);
-      this.user = res ;
-      this.factureForm = this.fb.group({
-        name: [this.data?.facture?.name || '', Validators.required],
-        price: [this.data?.facture?.price || 0, [Validators.required, Validators.min(0)]],
-        quantity: [this.data?.facture?.quantity || 0, [Validators.required, Validators.min(0)]],
-        imageUrl: [this.data?.facture?.imageUrl || ''],
-        userId: [ this.user.id, Validators.required],
-      });
-    })
-  
+    this.factureForm = this.fb.group({
+      name: ['', Validators.required],
+      date: [new Date().toISOString().substring(0, 10), Validators.required],
+      items: this.fb.array([this.createItemGroup()])
+    });
 
-  
+    // Exemple de récupération de produits (à adapter)
+    // this.productService.getProducts().subscribe(res => this.products = res);
+  }
+
+  get items(): FormArray {
+    return this.factureForm.get('items') as FormArray;
+  }
+
+  createItemGroup(): FormGroup {
+    return this.fb.group({
+      productId: [null, Validators.required],
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      price: [0, [Validators.required, Validators.min(0)]]
+    });
+  }
+
+  addItem(): void {
+    this.items.push(this.createItemGroup());
+  }
+
+  removeItem(index: number): void {
+    this.items.removeAt(index);
+  }
+
+  get totalAmount(): number {
+    return this.items.controls.reduce((total, group) => {
+      const quantity = group.get('quantity')?.value || 0;
+      const price = group.get('price')?.value || 0;
+      return total + quantity * price;
+    }, 0);
   }
 
   onSubmit(): void {
-    console.log(this.factureForm.value);
-    
     if (this.factureForm.valid) {
-      this._factureService.addfacture(this.factureForm.value).subscribe(res => {
-        Swal.fire('Produit ajouté', 'Le produit a été ajouté avec succès.', 'success');
-
-        this.dialogRef.close(this.factureForm.value);
-      })
-     
-
+      const factureData = {
+        ...this.factureForm.value,
+        total: this.totalAmount
+      };
+      this.factureService.createFacture(factureData).subscribe({
+        next: (res) => {
+          console.log('Facture créée avec succès :', res);
+          this.dialogRef.close(res);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la création de la facture', err);
+        }
+      });
     }
   }
 
