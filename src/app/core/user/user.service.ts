@@ -1,11 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { User } from 'app/core/user/user.types';
-import { map, Observable, ReplaySubject, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, ReplaySubject, tap } from 'rxjs';
+import { environment } from 'environments/environment'; 
+
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    private _httpClient = inject(HttpClient);
+     userSubscription :BehaviorSubject<any[]> = new BehaviorSubject([]) ; 
+      constructor(private _httpClient :HttpClient) {
+       }
+
+
+
+
+      getUsers(){
+        return this._httpClient.get(`${environment.url}/users`).pipe(tap(res => {
+          this.userSubscription.next(res as any[]);
+        }))}
+
     private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
 
     // -----------------------------------------------------------------------------------------------------

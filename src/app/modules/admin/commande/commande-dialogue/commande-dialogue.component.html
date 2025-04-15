@@ -1,6 +1,80 @@
-<div class="bg-white w-full max-w-md">
-    <h2 class="text-2xl font-semibold text-gray-700 mb-4">Ajouter une nouvelle commande </h2>
-  
-  
-  </div>
-  
+<div class="bg-white w-full max-w-2xl p-6 rounded-lg shadow-md">
+  <h2 class="text-2xl font-semibold text-gray-700 mb-6">Créer une commande</h2>
+
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+
+    <!-- Sélection de l'utilisateur -->
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-600">Utilisateur</label>
+      <select formControlName="userId" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300">
+        <option [ngValue]="null">-- Choisir un utilisateur --</option>
+        <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+      </select>
+    </div>
+
+    <!-- Liste des produits -->
+    <div formArrayName="items" class="mb-4 space-y-4">
+      <div
+        *ngFor="let item of items.controls; let i = index"
+        [formGroupName]="i"
+        class="flex gap-2 items-end"
+      >
+        <!-- Produit -->
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-gray-600">Produit</label>
+          <select formControlName="productId" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300">
+            <option [ngValue]="null">-- Choisir un produit --</option>
+            <option *ngFor="let product of products" [value]="product.id">{{ product.name }}</option>
+          </select>
+        </div>
+
+        <!-- Quantité -->
+        <div class="w-32">
+          <label class="block text-sm font-medium text-gray-600">Quantité</label>
+          <input
+            type="number"
+            min="1"
+            formControlName="quantity"
+            class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300"
+            placeholder="1"
+          />
+        </div>
+
+        <!-- Supprimer -->
+        <button
+          type="button"
+          class="text-red-600 hover:text-red-800 mt-6"
+          (click)="removeItem(i)"
+          *ngIf="items.length > 1"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+
+    <!-- Bouton Ajouter un produit -->
+    <div class="mb-4">
+      <button
+        type="button"
+        (click)="addItem()"
+        class="bg-gray-200 hover:bg-gray-300 text-sm px-3 py-1 rounded"
+      >
+        + Ajouter un produit
+      </button>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-6 flex justify-end gap-3">
+      <button type="button" (click)="onCancel()" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+        Annuler
+      </button>
+      <button
+        type="submit"
+        [disabled]="orderForm.invalid"
+        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Valider
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CommandeDialogueComponent } from './commande-dialogue.component';
 
-import { commandeDialogueComponent } from './commande-dialogue.component';
+
 
 describe('commandeDialogueComponent', () => {
-  let component: commandeDialogueComponent;
-  let fixture: ComponentFixture<commandeDialogueComponent>;
+  let component: CommandeDialogueComponent;
+  let fixture: ComponentFixture<CommandeDialogueComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [commandeDialogueComponent]
+      imports: [CommandeDialogueComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(commandeDialogueComponent);
+    fixture = TestBed.createComponent(CommandeDialogueComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

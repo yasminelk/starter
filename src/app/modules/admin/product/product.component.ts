@@ -48,16 +48,7 @@ export class ProductComponent {
     }
 
 
-    deleteUser(id){ 
-    /*  this.productService.deleteUser(id).subscribe(res => {
-       this.products = this.products.filter(user => user.id !== id);
-
-       
-       this.productService.productsubscription.next(this.products);
-       this.cdr.detectChanges();
-      })
-  }*/
-    }
+  
 
 
     updateProduct(product: any): void {
