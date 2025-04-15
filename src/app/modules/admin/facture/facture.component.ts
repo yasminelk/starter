@@ -4,35 +4,35 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { ProductDialogueComponent } from './product-dialogue/product-dialogue.component';
-import { ProductService } from './product.service';
 import Swal from 'sweetalert2';
+import { factureDialogueComponent } from './facture-dialogue/facture-dialogue.component';
+import { factureeService } from './facture.service';
 
 @Component({
-  selector: 'app-product',
+  selector: 'app-facture',
   imports:[MatIconModule,MatButtonModule,NgFor,MatTableModule] , 
-  templateUrl: './product.component.html',
-  styleUrl: './product.component.scss'
+  templateUrl: './facture.component.html',
+  styleUrl: './facture.component.scss'
 })
-export class ProductComponent {
+export class factureComponent {
   
    displayedColumns: string[] = ['name', 'Prix', 'quantity','actions'];
-      products: any[] = [] ;
-      constructor( @Inject(MatDialog) public dialog: MatDialog , private productService:ProductService,
+      factures: any[] = [] ;
+      constructor( @Inject(MatDialog) public dialog: MatDialog , private factureService:factureeService,
       private cdr: ChangeDetectorRef ) {
     
       }
       ngOnInit(): void {
-          this.productService.getProducts().subscribe(res => {
-              this.products = res as any[] ;
-              console.log("this.products",this.products);
+          this.factureService.getfactures().subscribe(res => {
+              this.factures = res as any[] ;
+              console.log("this.factures",this.factures);
               this.cdr.detectChanges();
               
           })
       }
 
    handleOpenDialog(params?:null){
-        const dialogRef = this.dialog.open(ProductDialogueComponent, {
+        const dialogRef = this.dialog.open(factureDialogueComponent, {
             width:  '500px',  // Default to 400px if not provided
             height: '650px', // Default to auto if not provided
             data: {},
@@ -49,22 +49,22 @@ export class ProductComponent {
 
 
     deleteUser(id){ 
-    /*  this.productService.deleteUser(id).subscribe(res => {
-       this.products = this.products.filter(user => user.id !== id);
+    /*  this.factureService.deleteUser(id).subscribe(res => {
+       this.factures = this.factures.filter(user => user.id !== id);
 
        
-       this.productService.productsubscription.next(this.products);
+       this.factureService.facturesubscription.next(this.factures);
        this.cdr.detectChanges();
       })
   }*/
     }
 
 
-    updateProduct(product: any): void {
+    updatefacture(facture: any): void {
       // Afficher un SweetAlert pour le succès de la mise à jour
       Swal.fire({
         title: 'Produit mis à jour',
-        text: `Le produit ${product.name} a été mis à jour avec succès.`,
+        text: `Le produit ${facture.name} a été mis à jour avec succès.`,
         icon: 'success',
         confirmButtonText: 'OK'
       });
@@ -73,7 +73,7 @@ export class ProductComponent {
     }
   
     // Supprimer un produit
-    deleteProduct(id: number): void {
+    deletefacture(id: number): void {
       // Demander confirmation avant suppression
       Swal.fire({
         title: 'Êtes-vous sûr ?',
@@ -87,7 +87,7 @@ export class ProductComponent {
       }).then((result) => {
         if (result.isConfirmed) {
           // Appeler la logique de suppression de produit ici
-          this.productService.deleteProduct(id).subscribe({
+          this.factureService.deletefacture(id).subscribe({
             next: () => {
               // Afficher un message de succès
               Swal.fire(
@@ -96,7 +96,7 @@ export class ProductComponent {
                 'success'
               );
               // Optionnel : Rafraîchir la liste des produits
-              this.products = this.products.filter(product => product.id !== id);
+              this.factures = this.factures.filter(facture => facture.id !== id);
             },
             error: (err) => {
               // Afficher un message d'erreur en cas de problème

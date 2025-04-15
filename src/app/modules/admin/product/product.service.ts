@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,12 +10,15 @@ export class ProductService {
   constructor(private _httpClient : HttpClient) {
 
    }
-   getProducts() { 
-    return this._httpClient.get(`${environment.url}/products`).subscribe(res => {
-      this.productsSubscription.next(res as any[]);
-    });
-   }
+   getProducts(): Observable<any[]> {
+    return this._httpClient.get<any[]>(`${environment.url}/products`);
+  }
    addProduct(product){
     return this._httpClient.post(`${environment.url}/products` , product)
   }
+
+
+  deleteProduct(id){
+        return this._httpClient.delete(`${environment.url}/products/${id}`)
+      }
 }

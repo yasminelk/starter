@@ -16,7 +16,20 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon : 'heroicons_outline:chart-pie',
         link : '/product'
     },
-  
+    {
+        id   : 'productManagement',
+        title: "Gestion Commandes",
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/commande'
+    },
+    {
+        id   : 'productManagement',
+        title: "Gestion Factures",
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/facture'
+    },
 ];
 export const compactNavigation: FuseNavigationItem[] = [
     {

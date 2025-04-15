@@ -6,6 +6,7 @@ import { UserDialogComponent } from './user-dialog/user-dialog.component';
 import { UsersService } from './users.service';
 import { NgFor } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
+import Swal from 'sweetalert2';
 
 @Component({
     selector     : 'example',
@@ -50,14 +51,36 @@ export class ExampleComponent implements OnInit
           });
         
     }
-    deleteUser(id){ 
-        this.userService.deleteUser(id).subscribe(res => {
-         // delete user from exisiting
-         this.users = this.users.filter(user => user.id !== id);
-
-         
-         this.userService.userSubscription.next(this.users);
-         this.cdr.detectChanges();
-        })
-    }
+    deleteUser(id) {
+        Swal.fire({
+          title: 'Êtes-vous sûr ?',
+          text: "Cette action est irréversible !",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Oui, supprimer',
+          cancelButtonText: 'Annuler'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.userService.deleteUser(id).subscribe(res => {
+              this.users = this.users.filter(user => user.id !== id);
+              this.userService.userSubscription.next(this.users);
+              this.cdr.detectChanges();
+      
+              Swal.fire(
+                'Supprimé !',
+                'L’utilisateur a été supprimé.',
+                'success'
+              );
+            }, error => {
+              Swal.fire(
+                'Erreur !',
+                'La suppression a échoué.',
+                'error'
+              );
+            });
+          }
+        });
+      }
 }

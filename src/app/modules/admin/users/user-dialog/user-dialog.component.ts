@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsersService } from '../users.service';
 import { CommonModule, NgFor, NgForOf } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user-dialog',
@@ -30,6 +31,8 @@ export class UserDialogComponent {
   onSubmit(): void {
     if (this.userForm.valid) {
       this.userService.addUser(this.userForm.value);
+      Swal.fire('Produit ajouté', 'utilisateur a été ajouté avec succès.', 'success');
+      
       console.log('User added:', this.userForm.value);
     } else {
       console.log('Form is invalid');
