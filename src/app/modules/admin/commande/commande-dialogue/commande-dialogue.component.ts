@@ -40,6 +40,7 @@ export class CommandeDialogueComponent implements OnInit {
 
     this.userService.getUsers().subscribe((users: any[]) => {
       this.users = users;
+      console.log('this.users',this.users);
     });
    this.productService.getProducts().subscribe((res) => (this.products = res));
   }

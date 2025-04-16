@@ -1,10 +1,12 @@
 <div class="flex min-w-0 flex-auto flex-col">
   <div class="flex p-4 justify-between bg-primary">
     <div class="flex p-2 justify-center items-center gap-4 text-white">
+      <!-- Icône pour le titre -->
       <mat-icon class="text-white text-3xl" fontIcon="group"></mat-icon>
-      <h2 class="text-2xl">Gestion factures</h2>
+      <h2 class="text-2xl">Gestion des Factures</h2>
     </div>
     <div>
+      <!-- Bouton pour ajouter une facture -->
       <button mat-fab class="!bg-white text-gray-700" (click)="handleOpenDialog()">
         <mat-icon>add</mat-icon>
       </button>
@@ -12,8 +14,55 @@
   </div>
 
   <div class="p-6 bg-white rounded-xl shadow-md">
-    <h2 class="text-2xl font-semibold mb-4">la listes des factures</h2>
- 
-    
+    <h2 class="text-2xl font-semibold mb-4">Liste des Factures</h2>
+
+    <table mat-table [dataSource]="factures" class="mat-elevation-z8 w-full">
+      <!-- Nom de la facture -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Nom </th>
+        <td mat-cell *matCellDef="let facture">
+          {{ facture.name }}
+        </td>
+      </ng-container>
+
+      <!-- Prix de la facture -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Prix </th>
+        <td mat-cell *matCellDef="let facture">
+          {{ facture.total }} DA
+        </td>
+      </ng-container>
+
+      <!-- Quantité des items -->
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef> Quantité </th>
+        <td mat-cell *matCellDef="let facture">
+          {{ facture.items.length }}
+        </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let facture">
+          <!-- Bouton Modifier avec icône -->
+          <button mat-icon-button color="primary" (click)="updatefacture(facture)" matTooltip="Modifier">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <!-- Bouton Supprimer avec icône -->
+          <button mat-icon-button color="warn" (click)="deletefacture(facture.id)" matTooltip="Supprimer">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <!-- Bouton pour Télécharger en PDF avec icône -->
+          <button mat-icon-button color="accent" (click)="downloadPDF(facture.id)" matTooltip="Télécharger PDF">
+            <mat-icon>picture_as_pdf</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Déclaration des lignes -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
   </div>
 </div>

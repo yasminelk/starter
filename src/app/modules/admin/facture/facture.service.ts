@@ -10,7 +10,7 @@ export class FactureService {
 
 
   getFactures() {
-    return this.http.get<any[]>(`${environment.url}/factures`);
+    return this.http.get<any[]>(`${environment.url}/invoices`);
   }
   updateFacture(id: number, data: any){
 

@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { FactureService } from '../facture.service';
 import { ReactiveFormsModule } from '@angular/forms'; // ✅ AJOUTER CECI
 import { CommonModule } from '@angular/common';
+import { ProductService } from '../../product/product.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class FactureDialogueComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<FactureDialogueComponent>,
-    private factureService: FactureService
+    private factureService: FactureService,    private productService: ProductService,
+    
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +37,7 @@ export class FactureDialogueComponent implements OnInit {
     });
 
     // Exemple de récupération de produits (à adapter)
-    // this.productService.getProducts().subscribe(res => this.products = res);
+    this.productService.getProducts().subscribe((res) => (this.products = res));
   }
 
   get items(): FormArray {

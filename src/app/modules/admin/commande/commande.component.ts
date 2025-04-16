@@ -18,7 +18,7 @@ import { CommandeDialogueComponent } from './commande-dialogue/commande-dialogue
 })
 export class commandeComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'Prix', 'userId', 'actions'];
+  displayedColumns: string[] = ['id', 'user', 'totalPrice', 'produit', 'quantite', 'actions'];
   commandes: any[] = [];
 
   constructor(
@@ -30,7 +30,16 @@ export class commandeComponent implements OnInit {
   ngOnInit(): void {
     this.fetchCommandes();
   }
-
+  downloadPDF(orderId: number) {
+    const apiUrl = `http://localhost:3000/orders/${orderId}/pdf`; // change l'URL selon ton backend
+  
+    // Crée un lien invisible pour forcer le téléchargement
+    const link = document.createElement('a');
+    link.href = apiUrl;
+    link.target = '_blank'; // Ouvre dans un nouvel onglet
+    link.click();
+  }
+  
   fetchCommandes(): void {
     this.commandeService.getcommandes().subscribe({
       next: (res) => {

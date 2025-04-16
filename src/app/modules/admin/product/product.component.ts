@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product',
-  imports:[MatIconModule,MatButtonModule,NgFor,MatTableModule] , 
+  imports:[MatIconModule,MatButtonModule,NgFor,MatTableModule,MatIconModule] , 
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss'
 })
@@ -30,7 +30,19 @@ export class ProductComponent {
               
           })
       }
-
+      viewProduct(product: any): void {
+        Swal.fire({
+          title: `Détails du produit : ${product.name}`,
+          html: `
+            <p><strong>Prix :</strong> ${product.Prix || 'N/A'} €</p>
+            <p><strong>Quantité :</strong> ${product.quantity || 'N/A'}</p>
+            ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" style="max-width:100%;margin-top:10px;border-radius:6px;">` : ''}
+          `,
+          icon: 'info',
+          confirmButtonText: 'Fermer'
+        });
+      }
+      
    handleOpenDialog(params?:null){
         const dialogRef = this.dialog.open(ProductDialogueComponent, {
             width:  '500px',  // Default to 400px if not provided
