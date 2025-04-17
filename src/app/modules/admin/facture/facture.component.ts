@@ -87,4 +87,16 @@ export class factureComponent {
       }
     });
   }
+
+  downloadPDF(invoiceId: number) {
+    this.factureService.downloadInvoicePDF(invoiceId).subscribe((data) => {
+      const blob = new Blob([data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `facture_${invoiceId}.pdf`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
 }

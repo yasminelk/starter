@@ -23,7 +23,11 @@ export class FactureService {
     });
   }
 
-
+  downloadInvoicePDF(invoiceId: number) {
+    return this.http.get(`${environment.url}/invoices/${invoiceId}/pdf`, {
+      responseType: 'blob', // important pour les fichiers
+    });
+  }
   createFacture(product){
       return this.http.post(`${environment.url}/invoices` , product)
     }
