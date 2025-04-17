@@ -17,7 +17,11 @@ export class FactureService {
   }
 
 
- 
+  downloadPDF(orderId: number) {
+    return this.http.get(`${environment.url}/${orderId}/pdf`, {
+      responseType: 'blob' // important pour manipuler un fichier binaire
+    });
+  }
 
 
   createFacture(product){
@@ -26,6 +30,6 @@ export class FactureService {
   
   
     deletefacture(id){
-          return this.http.delete(`${environment.url}/products/${id}`)
+          return this.http.delete(`${environment.url}/invoices/${id}`)
         }
 }
